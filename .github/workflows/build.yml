@@ -210,7 +210,7 @@ jobs:
         id: start-local-node
         if: ${{ !cancelled() && always() }}
         run: |
-          ${{ env.CG_EXEC }} npx @hashgraph/hedera-local start -d -—network local --balance=100000
+          ${{ env.CG_EXEC }} npx @hashgraph/hedera-local start -d -—network local --balance=100000 --network-tag=0.60.0-alpha.0
           sleep 30
 
       - name: Install dependencies
