@@ -473,6 +473,18 @@ export default class TopicCreateTransaction extends Transaction {
 
     /**
      * @override
+     * @param {?import("../client/Client.js").default<Channel, *>} client
+     * @returns {this}
+     */
+    freezeWith(client) {
+        if (!this._autoRenewAccountId && client?.operatorAccountId) {
+            this.setAutoRenewAccountId(client.operatorAccountId);
+        }
+        return super.freezeWith(client);
+    }
+
+    /**
+     * @override
      * @internal
      * @param {Channel} channel
      * @param {HashgraphProto.proto.ITransaction} request

@@ -38,7 +38,6 @@ describe("TopicCreate", function () {
         const response = await new TopicCreateTransaction()
             .setAdminKey(operatorKey)
             .setSubmitKey(operatorKey)
-            .setAutoRenewAccountId(operatorId)
             .execute(env.client);
 
         const topic = (await response.getReceipt(env.client)).topicId;
@@ -81,7 +80,10 @@ describe("TopicCreate", function () {
         expect(info.sequenceNumber.toInt()).to.eql(0);
         expect(info.adminKey).to.be.null;
         expect(info.submitKey).to.be.null;
-        expect(info.autoRenewAccountId).to.be.null;
+        // as per HIP-1021 autoRenewAccountId should be set to the operator account id
+        expect(info.autoRenewAccountId.toString()).to.equal(
+            env.client.operatorAccountId.toString(),
+        );
         expect(info.autoRenewPeriod.seconds.toInt()).to.be.eql(7776000);
         expect(info.expirationTime).to.be.not.null;
     });
