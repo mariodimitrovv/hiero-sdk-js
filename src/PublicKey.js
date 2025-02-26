@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import * as cryptography from "@hashgraph/cryptography";
+import { PublicKey as PublicKeyCrypto } from "@hashgraph/cryptography";
 import { arrayEqual } from "./array.js";
 import Key from "./Key.js";
 import CACHE from "./Cache.js";
@@ -22,7 +22,7 @@ export default class PublicKey extends Key {
     /**
      * @internal
      * @hideconstructor
-     * @param {cryptography.PublicKey} key
+     * @param {PublicKeyCrypto} key
      */
     constructor(key) {
         super();
@@ -35,7 +35,7 @@ export default class PublicKey extends Key {
      * @returns {PublicKey}
      */
     static fromBytes(data) {
-        return new PublicKey(cryptography.PublicKey.fromBytes(data));
+        return new PublicKey(PublicKeyCrypto.fromBytes(data));
     }
 
     /**
@@ -43,7 +43,7 @@ export default class PublicKey extends Key {
      * @returns {PublicKey}
      */
     static fromBytesED25519(data) {
-        return new PublicKey(cryptography.PublicKey.fromBytesED25519(data));
+        return new PublicKey(PublicKeyCrypto.fromBytesED25519(data));
     }
 
     /**
@@ -51,7 +51,7 @@ export default class PublicKey extends Key {
      * @returns {PublicKey}
      */
     static fromBytesECDSA(data) {
-        return new PublicKey(cryptography.PublicKey.fromBytesECDSA(data));
+        return new PublicKey(PublicKeyCrypto.fromBytesECDSA(data));
     }
 
     /**
@@ -64,7 +64,7 @@ export default class PublicKey extends Key {
      * @returns {PublicKey}
      */
     static fromString(text) {
-        return new PublicKey(cryptography.PublicKey.fromString(text));
+        return new PublicKey(PublicKeyCrypto.fromString(text));
     }
 
     /**
@@ -74,7 +74,7 @@ export default class PublicKey extends Key {
      * @returns {PublicKey}
      */
     static fromStringECDSA(text) {
-        return new PublicKey(cryptography.PublicKey.fromStringECDSA(text));
+        return new PublicKey(PublicKeyCrypto.fromStringECDSA(text));
     }
 
     /**
@@ -84,7 +84,7 @@ export default class PublicKey extends Key {
      * @returns {PublicKey}
      */
     static fromStringED25519(text) {
-        return new PublicKey(cryptography.PublicKey.fromStringED25519(text));
+        return new PublicKey(PublicKeyCrypto.fromStringED25519(text));
     }
 
     /**

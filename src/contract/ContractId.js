@@ -8,7 +8,6 @@ import * as hex from "../encoding/hex.js";
 import { arrayEqual } from "../array.js";
 import Long from "long";
 import { isLongZeroAddress } from "../util.js";
-import axios from "axios";
 
 /**
  * @typedef {import("../client/Client.js").default<*, *>} Client
@@ -125,7 +124,9 @@ export default class ContractId extends Key {
         const url = `https://${mirrorUrl}/api/v1/contracts/${hex.encode(
             this.evmAddress,
         )}`;
-        const mirrorAccountId = (await axios.get(url)).data.contract_id;
+        const response = await fetch(url);
+        const data = await response.json();
+        const mirrorAccountId = data.contract_id;
 
         this.num = Long.fromString(
             mirrorAccountId.slice(mirrorAccountId.lastIndexOf(".") + 1),
