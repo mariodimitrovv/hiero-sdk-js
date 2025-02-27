@@ -14,7 +14,7 @@ describe("TopicMessageQuery", function () {
         env = await IntegrationTestEnv.new({ throwaway: true });
     });
 
-    it.only("should be executable", async function () {
+    it("should be executable", async function () {
         const operatorId = env.operatorId;
         const operatorKey = env.operatorKey.publicKey;
 
