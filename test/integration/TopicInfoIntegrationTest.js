@@ -50,7 +50,7 @@ describe("TopicInfo", function () {
         ).getReceipt(env.client);
     });
 
-    it.only("should be executable when no fields are set", async function () {
+    it("should be executable when no fields are set", async function () {
         const response = await new TopicCreateTransaction().execute(env.client);
 
         const topic = (await response.getReceipt(env.client)).topicId;
