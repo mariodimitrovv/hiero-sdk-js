@@ -171,7 +171,7 @@ describe("TokenCreate", function () {
         );
     });
 
-    it("expirationTime should override autoRenewAccountId", async function () {
+    it("expirationTime should override autoRenewPeriod", async function () {
         const operatorId = env.operatorId;
         const DAYS_90_IN_SECONDS = 7776000;
         const expirationTime = new Timestamp(
