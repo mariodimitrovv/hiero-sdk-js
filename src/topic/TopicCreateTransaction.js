@@ -459,7 +459,9 @@ export default class TopicCreateTransaction extends Transaction {
      * @returns {this}
      */
     freezeWith(client) {
-        if (!this._autoRenewAccountId && client?.operatorAccountId) {
+        if (!this._autoRenewAccountId && this.transactionId?.accountId) {
+            this.setAutoRenewAccountId(this.transactionId?.accountId);
+        } else if (!this._autoRenewAccountId && client?.operatorAccountId) {
             this.setAutoRenewAccountId(client.operatorAccountId);
         }
         return super.freezeWith(client);
