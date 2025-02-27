@@ -1,5 +1,6 @@
 import {
     AccountBalanceQuery,
+    AccountCreateTransaction,
     CustomFeeLimit,
     CustomFixedFee,
     Hbar,
@@ -12,6 +13,7 @@ import {
     TopicInfoQuery,
     TopicMessageSubmitTransaction,
     TopicUpdateTransaction,
+    TransactionId,
     TransferTransaction,
 } from "../../src/exports.js";
 import IntegrationTestEnv from "./client/NodeIntegrationTestEnv.js";
@@ -86,6 +88,44 @@ describe("TopicCreate", function () {
         );
         expect(info.autoRenewPeriod.seconds.toInt()).to.be.eql(7776000);
         expect(info.expirationTime).to.be.not.null;
+    });
+
+    it("should set autorenew account from transaction ID", async function () {
+        // Create a new account with 10 Hbar
+        const accountKey = PrivateKey.generateECDSA();
+        const response = await new AccountCreateTransaction()
+            .setKeyWithoutAlias(accountKey.publicKey)
+            .setInitialBalance(new Hbar(10))
+            .execute(env.client);
+
+        const { accountId } = await response.getReceipt(env.client);
+
+        // Create transaction ID with the new account
+        const txId = TransactionId.generate(accountId);
+
+        // Create and freeze token transaction
+        const frozenTxn = await (
+            await new TopicCreateTransaction()
+                .setTransactionId(txId)
+                .freezeWith(env.client)
+                .sign(accountKey)
+        ).execute(env.client);
+
+        const { topicId } = await frozenTxn.getReceipt(env.client);
+
+        // Query token info
+        const info = await new TopicInfoQuery()
+            .setNodeAccountIds([frozenTxn.nodeId])
+            .setTopicId(topicId)
+            .execute(env.client);
+
+        console.log("created account id", accountId);
+        console.log("topic account id", info.autoRenewAccountId);
+
+        // Verify autoRenewAccountId matches the account that created the token
+        expect(info.autoRenewAccountId.toString()).to.equal(
+            accountId.toString(),
+        );
     });
 
     describe("HIP-991: Permissionless revenue generating topics", function () {

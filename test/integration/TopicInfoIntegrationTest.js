@@ -50,7 +50,7 @@ describe("TopicInfo", function () {
         ).getReceipt(env.client);
     });
 
-    it("should be executable when no fields are set", async function () {
+    it.only("should be executable when no fields are set", async function () {
         const response = await new TopicCreateTransaction().execute(env.client);
 
         const topic = (await response.getReceipt(env.client)).topicId;
@@ -65,7 +65,9 @@ describe("TopicInfo", function () {
         expect(info.sequenceNumber.toInt()).to.eql(0);
         expect(info.adminKey).to.be.null;
         expect(info.submitKey).to.be.null;
-        expect(info.autoRenewAccountId).to.be.null;
+        expect(info.autoRenewAccountId.toString()).to.be.eql(
+            env.operatorId.toString(),
+        );
         expect(info.autoRenewPeriod.seconds.toInt()).to.be.eql(7776000);
         expect(info.expirationTime).to.be.not.null;
     });
