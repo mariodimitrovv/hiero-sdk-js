@@ -155,7 +155,7 @@ describe("TokenInfo", function () {
         }
     });
 
-    it.only("should set autorenew account from transaction ID", async function () {
+    it("should set autorenew account from transaction ID", async function () {
         // Create a new account with 10 Hbar
         const accountKey = PrivateKey.generateECDSA();
         const response = await new AccountCreateTransaction()
