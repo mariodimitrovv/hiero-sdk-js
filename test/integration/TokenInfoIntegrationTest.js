@@ -1,8 +1,11 @@
 import {
+    AccountCreateTransaction,
+    Hbar,
     PrivateKey,
     Status,
     TokenCreateTransaction,
     TokenInfoQuery,
+    TransactionId,
 } from "../../src/exports.js";
 import IntegrationTestEnv from "./client/NodeIntegrationTestEnv.js";
 
@@ -150,6 +153,45 @@ describe("TokenInfo", function () {
         if (!err) {
             throw new Error("token info query did not error");
         }
+    });
+
+    it.only("should set autorenew account from transaction ID", async function () {
+        // Create a new account with 10 Hbar
+        const accountKey = PrivateKey.generateECDSA();
+        const response = await new AccountCreateTransaction()
+            .setKeyWithoutAlias(accountKey.publicKey)
+            .setInitialBalance(new Hbar(10))
+            .execute(env.client);
+
+        const { accountId } = await response.getReceipt(env.client);
+
+        // Create transaction ID with the new account
+        const txId = TransactionId.generate(accountId);
+
+        const { tokenId } = await (
+            await (
+                await new TokenCreateTransaction()
+                    .setTransactionId(txId)
+                    .setTokenName("ffff")
+                    .setTokenSymbol("F")
+                    .setDecimals(3)
+                    .setTreasuryAccountId(accountId)
+                    .freezeWith(env.client)
+                    .sign(accountKey)
+            ).execute(env.client)
+        ).getReceipt(env.client);
+
+        console.log("tokenId", tokenId);
+        // Query token info
+        const info = await new TokenInfoQuery()
+
+            .setTokenId(tokenId)
+            .execute(env.client);
+
+        // Verify autoRenewAccountId matches the account that created the token
+        expect(info.autoRenewAccountId.toString()).to.equal(
+            accountId.toString(),
+        );
     });
 
     after(async function () {
