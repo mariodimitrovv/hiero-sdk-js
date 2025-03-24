@@ -39,9 +39,8 @@
         "transactions"
     ],
     "sideEffects": [
-        "./src/query/Query.js",
-        "./src/query/CostQuery.js",
-        "**/*Query.js"
+        "**/*Query.js",
+        "**/browser.js"
     ],
     "files": [
         "lib/",
