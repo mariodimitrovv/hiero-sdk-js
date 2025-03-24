@@ -38,7 +38,11 @@
         "sdk",
         "transactions"
     ],
-    "sideEffects": false,
+    "sideEffects": [
+        "./src/query/Query.js",
+        "./src/query/CostQuery.js",
+        "**/*Query.js"
+    ],
     "files": [
         "lib/",
         "src/"
