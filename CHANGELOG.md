@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.63.0-beta.1
+
+### Changed
+
+-   Replaced elliptic package with @noble/curves package by @venilinvasilev in #2937
+
+Unlike elliptic, @noble/curves automatically enforces a normalized s value in ECDSA signatures, aligning with best practices in cryptographic security. This ensures better interoperability while preventing malleability-related issues.
+
+### Removed
+
+-   Removed support of non-normalized signatures by @venilinvasilev in #2937
+
+This is NOT a Breaking Change. The SDK continues to function exactly as before, as @noble/curves produces valid signatures compatible with existing verification logic. The normalized s value behavior is already an industry standard (Ethereum's EIP-2, Bitcoin's BIP-66).
+
 ## v2.62.0
 
 ### Added
