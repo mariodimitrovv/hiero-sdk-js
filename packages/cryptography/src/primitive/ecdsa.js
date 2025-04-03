@@ -1,6 +1,7 @@
 import { keccak256 } from "./keccak.js";
 import * as hex from "../encoding/hex.js";
 import { secp256k1 } from "@noble/curves/secp256k1";
+import { equalBytes } from "./utils.js";
 
 /**
  * @typedef {import("../EcdsaPrivateKey.js").KeyPair} KeyPair
@@ -80,4 +81,34 @@ export function verify(keydata, message, signature) {
     const s = BigInt("0x" + hex.encode(signature.subarray(32, 64)));
 
     return secp256k1.verify({ r, s }, data, keydata);
+}
+
+/**
+ * @param {Uint8Array} privateKey
+ * @param {Uint8Array} signature - 64-byte compact signature (r || s)
+ * @param {Uint8Array} message - Original message (not hashed)
+ * @returns {number} Recovery ID (0–3), or -1
+ */
+export function getRecoveryId(privateKey, signature, message) {
+    const expectedPubKey = secp256k1.getPublicKey(privateKey, false);
+    const hash = hex.decode(keccak256(`0x${hex.encode(message)}`));
+
+    for (let recovery = 0; recovery < 4; recovery++) {
+        try {
+            const sig =
+                secp256k1.Signature.fromCompact(signature).addRecoveryBit(
+                    recovery,
+                );
+
+            const recovered = sig.recoverPublicKey(hash).toRawBytes(false);
+
+            if (equalBytes(recovered, expectedPubKey)) {
+                return recovery;
+            }
+        } catch {
+            // Ignore invalid recoveries
+        }
+    }
+
+    throw new Error("Unexpected error: could not construct a recoverable key.");
 }
