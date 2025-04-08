@@ -50,47 +50,7 @@ export default class BaseIntegrationTestEnv {
     static async new(options = {}) {
         let client, wallet, operatorId, operatorKey;
 
-        if (
-            options.env.HEDERA_NETWORK != null &&
-            options.env.HEDERA_NETWORK == "previewnet"
-        ) {
-            client = options.client.forPreviewnet();
-        } else if (
-            options.env.HEDERA_NETWORK != null &&
-            options.env.HEDERA_NETWORK == "testnet"
-        ) {
-            client = options.client.forTestnet();
-        } else if (
-            (options.env.HEDERA_NETWORK != null &&
-                options.env.HEDERA_NETWORK == "localhost") ||
-            options.env.HEDERA_NETWORK == "local-node"
-        ) {
-            client = options.client.forNetwork({
-                "127.0.0.1:50211": new AccountId(3),
-            });
-        } else if (options.env.CONFIG_FILE != null) {
-            client = await options.client.fromConfigFile(
-                options.env.CONFIG_FILE,
-            );
-        } else {
-            throw new Error(
-                "Failed to construct client for IntegrationTestEnv",
-            );
-        }
-
-        if (
-            options.env.OPERATOR_ID != null &&
-            options.env.OPERATOR_KEY != null
-        ) {
-            operatorId = AccountId.fromString(options.env.OPERATOR_ID);
-            operatorKey = PrivateKey.fromStringED25519(
-                options.env.OPERATOR_KEY,
-            );
-
-            client.setOperator(operatorId, operatorKey);
-            client.setMirrorNetwork(options.env.HEDERA_NETWORK);
-        }
-
+        client = await options.client.fromConfigFile(options.env.CONFIG_FILE);
         client
             .setMaxNodeAttempts(1)
             .setNodeMinBackoff(0)
@@ -108,9 +68,8 @@ export default class BaseIntegrationTestEnv {
                 break;
             }
         }
+        console.log(network);
         client.setNetwork(network);
-
-        wallet = new Wallet(operatorId, operatorKey, new LocalProvider());
 
         return new BaseIntegrationTestEnv({
             client: client,
