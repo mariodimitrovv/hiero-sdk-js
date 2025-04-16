@@ -71,7 +71,7 @@ describe("ContractId", function () {
         expect(contractId).to.deep.equal(contractIdFromAddress);
     });
     it("should handle long-zero format addresses", function () {
-        // Create a contract address that represents a Hedera contract (0.0.5)
+        // Create a contract address that represents a Hiero contract (0.0.5)
         const contractId = new ContractId(0, 0, 5);
         const solAddress = contractId.toSolidityAddress();
 

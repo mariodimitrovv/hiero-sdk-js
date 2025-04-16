@@ -322,11 +322,8 @@ describe("AccountId", function () {
             );
         }
     });
-});
-
-describe("isLongZeroAddress", function () {
-    it("should identify Hedera account IDs with zero shard and realm", function () {
-        // Create a typical Hedera account address with zeros in shard and realm
+    it("should identify Hiero account IDs with zero shard and realm", function () {
+        // Create a typical Hiero account address with zeros in shard and realm
         const address = new Uint8Array(20);
         // Set some non-zero bytes in the account number portion (last 8 bytes)
         address[12] = 1;
@@ -335,7 +332,7 @@ describe("isLongZeroAddress", function () {
         expect(isLongZeroAddress(address)).to.be.true;
     });
 
-    it("should identify Hedera account IDs with non-zero shard", function () {
+    it("should identify Hiero account IDs with non-zero shard", function () {
         const address = new Uint8Array(20);
         // Set non-zero shard (first 4 bytes)
         address[0] = 1;
@@ -354,7 +351,7 @@ describe("isLongZeroAddress", function () {
         expect(isLongZeroAddress(bytes)).to.be.false;
     });
 
-    it("should identify Hedera account IDs with large realm values", function () {
+    it("should identify Hiero account IDs with large realm values", function () {
         const accountId = new AccountId(1, 50000, 3);
         const solAddress = accountId.toSolidityAddress();
         const bytes = hex.decode(solAddress);
@@ -370,7 +367,7 @@ describe("isLongZeroAddress", function () {
 
 describe("fromEvmAddress", function () {
     it("should handle long-zero format addresses", function () {
-        // Create an address that represents a Hedera account ID (0.0.5)
+        // Create an address that represents a Hiero account ID (0.0.5)
         const accountId = new AccountId(0, 0, 5);
         const solAddress = accountId.toSolidityAddress();
 
@@ -402,7 +399,7 @@ describe("fromEvmAddress", function () {
     });
 
     it("should handle non-zero shard and realm with long-zero format", function () {
-        // Create an address that represents a Hedera account ID (1.2.5)
+        // Create an address that represents a Hiero account ID (1.2.5)
         const accountId = new AccountId(1, 2, 5);
         const solAddress = accountId.toSolidityAddress();
 

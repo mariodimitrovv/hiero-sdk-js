@@ -119,7 +119,7 @@ export function isStringOrUint8Array(variable) {
 }
 
 /**
- * Takes an address as `Uint8Array` and returns whether or not this represents a Hedera account ID
+ * Takes an address as `Uint8Array` and returns whether or not this represents a Hiero account ID
  * converted to a solidity address format (rather than a native Ethereum address).
  *
  * An account ID in solidity address format has:
@@ -128,14 +128,14 @@ export function isStringOrUint8Array(variable) {
  * - Last 8 bytes (12-19) = account number
  *
  * This function checks if the middle bytes (4-11) follow the expected pattern
- * for a Hedera realm number, which helps differentiate from Ethereum addresses.
+ * for a Hiero realm number, which helps differentiate from Ethereum addresses.
  *
  * @param {Uint8Array} address - The 20-byte address to check
- * @returns {boolean} - True if this represents a Hedera account ID, false if it's likely an Ethereum address
+ * @returns {boolean} - True if this represents a Hiero account ID, false if it's likely an Ethereum address
  */
 export function isLongZeroAddress(address) {
     // Check if the realm bytes (4-11) follow expected pattern
-    // In a Hedera account ID, these bytes will typically have leading zeros
+    // In a Hiero account ID, these bytes will typically have leading zeros
     // and represent a valid realm number
     let hasNonZeroBytes = false;
     for (let i = 4; i < 8; i++) {
@@ -146,7 +146,7 @@ export function isLongZeroAddress(address) {
     }
 
     // If first 4 bytes are zero and no non-zero bytes found in first half of realm,
-    // this is likely a Hedera account ID
+    // this is likely a Hiero account ID
     return !hasNonZeroBytes;
 }
 
