@@ -363,9 +363,6 @@ describe("AccountId", function () {
         const address = new Uint8Array(20); // All bytes are 0
         expect(isLongZeroAddress(address)).to.be.true;
     });
-});
-
-describe("fromEvmAddress", function () {
     it("should handle long-zero format addresses", function () {
         // Create an address that represents a Hiero account ID (0.0.5)
         const accountId = new AccountId(0, 0, 5);
