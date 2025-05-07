@@ -1,12 +1,15 @@
 import { TokenNftInfoQuery } from "../../src/index.js";
 import Long from "long";
-import { expect } from "chai";
 
 describe("TokenNftInfoQuery", function () {
     describe("_fromProtobuf", function () {
         it("should create from tokenGetNftInfo protobuf", function () {
             const nftId = {
-                tokenID: { shardNum: 0, realmNum: 0, tokenNum: 1 },
+                token_ID: {
+                    shardNum: Long.fromNumber(0),
+                    realmNum: Long.fromNumber(0),
+                    tokenNum: Long.fromNumber(1),
+                },
                 serialNumber: Long.fromNumber(2),
             };
 
@@ -22,7 +25,7 @@ describe("TokenNftInfoQuery", function () {
             expect(tokenNftInfoQuery.nftId.tokenId.toString()).to.equal(
                 "0.0.1",
             );
-            expect(tokenNftInfoQuery.nftId.serialNumber.toNumber()).to.equal(2);
+            expect(tokenNftInfoQuery.nftId.serial.toNumber()).to.equal(2);
         });
 
         it("should create from tokenGetAccountNftInfos protobuf", function () {
