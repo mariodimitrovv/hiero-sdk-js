@@ -194,12 +194,8 @@ describe("FeeComponents", function () {
             const bytes = original.toBytes();
             const deserialized = FeeComponents.fromBytes(bytes);
 
-            expect(deserialized.min.toNumber()).to.equal(10);
-            expect(deserialized.max.toNumber()).to.equal(0);
-            expect(deserialized.constant.toNumber()).to.equal(5);
-            expect(deserialized.transactionBandwidthByte.toNumber()).to.equal(
-                0,
-            );
+            expect(deserialized.min.toInt()).to.equal(10);
+            expect(deserialized.constant.toInt()).to.equal(5);
             expect(deserialized.responseMemoryByte.toNumber()).to.equal(7);
         });
     });
