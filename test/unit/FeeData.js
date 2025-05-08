@@ -1,5 +1,4 @@
 import { FeeData, FeeComponents, FeeDataType } from "../../src/index.js";
-import * as HieroProto from "@hashgraph/proto";
 
 import Long from "long";
 
