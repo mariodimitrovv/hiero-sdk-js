@@ -12,3 +12,7 @@ ignore:
     - "src/account/LiveHashQuery.js"
     - "src/system/SystemUndeleteTransaction.js"
     - "src/system/SystemDeleteTransaction.js"
+    - "src/contract/StorageChange.js"
+    - "src/contract/ContractStateChange.js"
+    - "src/transaction/SignatureMapLegacy.js"
+    - "src/transaction/NodeAccountIdSignatureMapLegacy.js"
