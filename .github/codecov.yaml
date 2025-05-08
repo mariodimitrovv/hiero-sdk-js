@@ -10,3 +10,5 @@ ignore:
     - "src/account/LiveHashAddTransaction.js"
     - "src/account/LiveHashDeleteTransaction.js"
     - "src/account/LiveHashQuery.js"
+    - "src/system/SystemUndeleteTransaction.js"
+    - "src/system/SystemDeleteTransaction.js"
