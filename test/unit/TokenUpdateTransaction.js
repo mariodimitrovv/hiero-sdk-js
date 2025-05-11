@@ -5,9 +5,9 @@ import {
     AccountId,
     Timestamp,
     TokenKeyValidation,
-    Duration,
     TokenId,
 } from "../../src/index.js";
+import Duration from "../../src/Duration.js";
 import Long from "long";
 
 describe("TokenUpdateTransaction", function () {
@@ -231,7 +231,7 @@ describe("TokenUpdateTransaction", function () {
                 pauseKey: pauseKey,
                 metadataKey: metadataKey,
                 metadata: metadata,
-                keyVerificationMode: TokenKeyValidation.NoCheckValidation,
+                keyVerificationMode: TokenKeyValidation.NoValidation,
             });
 
             expect(tx.tokenId.toString()).to.equal(tokenId.toString());
@@ -258,7 +258,7 @@ describe("TokenUpdateTransaction", function () {
             expect(tx.metadataKey).to.equal(metadataKey);
             expect(tx.metadata).to.equal(metadata);
             expect(tx.keyVerificationMode).to.equal(
-                TokenKeyValidation.NoCheckValidation,
+                TokenKeyValidation.NoValidation,
             );
         });
 
