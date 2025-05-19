@@ -23,6 +23,7 @@ export default defineConfig({
         hookTimeout: 120000,
         testTimeout: 120000,
         maxWorkers: 4,
+        minWorkers: 4,
         coverage: {
             include: ["src/**/*.js"],
             provider: "v8",
