@@ -8,14 +8,26 @@ export default defineConfig({
             provider: "playwright",
             enabled: true,
             instances: [{ browser: "chromium" }],
+            connectTimeout: 60000, // 1 minute for connections
         },
         include: ["test/unit/**/*.js"],
         exclude: ["test/unit/Mocker.js", "test/unit/node/*"],
+        testTimeout: 60000,
+        retry: 1,
+        hookTimeout: 60000, // 1 minute for hooks
         coverage: {
             include: ["src/**/*.js"],
             provider: "v8",
             reporter: ["text-summary", "lcov"],
             reportsDirectory: "./coverage",
+        },
+    },
+    optimizeDeps: {
+        esbuildOptions: {
+            // Node.js global to browser polyfill
+            define: {
+                global: "globalThis",
+            },
         },
     },
     resolve: {
