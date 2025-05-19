@@ -14,7 +14,10 @@ export default defineConfig({
         exclude: ["test/unit/Mocker.js", "test/unit/node/*"],
         testTimeout: 60000,
         retry: 1,
-        hookTimeout: 60000, // 1 minute for hooks
+        // Run sequentially to ensure more stable environment
+        fileParallelism: false,
+        // Ensure test isolation
+        isolate: true,
         coverage: {
             include: ["src/**/*.js"],
             provider: "v8",
