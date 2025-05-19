@@ -115,6 +115,10 @@ jobs:
         run: |
             sudo npx playwright install-deps
             npx playwright install
+    
+      - name: Browser Unit Test @hashgraph/sdk
+        if: ${{ steps.build-sdk.conclusion == 'success' && steps.playwright-deps.conclusion == 'success' && !cancelled() && always() }}
+        run: ${{ env.CG_EXEC }} task test:unit:browser
 
       - name: Browser Unit Test @hashgraph/cryptography
         working-directory: packages/cryptography
@@ -132,10 +136,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./packages/cryptography/coverage/lcov.info
           fail_ci_if_error: false
-
-      - name: Browser Unit Test @hashgraph/sdk
-        if: ${{ steps.build-sdk.conclusion == 'success' && steps.playwright-deps.conclusion == 'success' && !cancelled() && always() }}
-        run: ${{ env.CG_EXEC }} task test:unit:browser
 
       - name: Codecov @hashgraph/sdk
         if: ${{ steps.build-sdk.conclusion == 'success' && !cancelled() && always() }}
