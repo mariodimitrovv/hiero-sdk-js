@@ -2,14 +2,28 @@ import { beforeEach, afterEach, describe, it, expect, vi } from "vitest";
 import { SDK_VERSION } from "../../src/version.js";
 import NativeChannel from "../../src/channel/NativeChannel.js";
 
-// Mock the client constants if needed
-vi.mock("../../src/constants/ClientConstants.js", () => ({
+// Use vi.hoisted to properly hoist the mock factory
+const mockClientConstants = vi.hoisted(() => ({
     ALL_NODES: {
         "https://example.com": {
             toString: () => "example-node",
         },
     },
 }));
+
+// Mock the client constants
+vi.mock("../../src/constants/ClientConstants.js", () => mockClientConstants);
+
+// Base64 mock with vi.hoisted
+const mockBase64 = vi.hoisted(() => ({
+    // eslint-disable-next-line no-unused-vars
+    encode: (data) => "encoded",
+    // eslint-disable-next-line no-unused-vars
+    decode: (data) => new Uint8Array([1, 2, 3, 4]),
+}));
+
+// Mock for base64 encoding/decoding
+vi.mock("../../src/encoding/base64.native.js", () => mockBase64);
 
 // Mock FileReader for the native environment
 class MockFileReader {
@@ -35,14 +49,6 @@ const getGlobalObject = () => {
     if (typeof self !== "undefined") return self;
     return {};
 };
-
-// Mock for base64 encoding/decoding
-vi.mock("../../src/encoding/base64.native.js", () => ({
-    // eslint-disable-next-line no-unused-vars
-    encode: (data) => "encoded",
-    // eslint-disable-next-line no-unused-vars
-    decode: (data) => new Uint8Array([1, 2, 3, 4]),
-}));
 
 describe("NativeChannel", () => {
     let fetchSpy;
