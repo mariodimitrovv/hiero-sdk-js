@@ -15,7 +15,7 @@ export default defineConfig({
         testTimeout: 60000,
         retry: 1,
         // Run sequentially to ensure more stable environment
-        fileParallelism: false,
+        maxWorkers: 4,
         // Ensure test isolation
         isolate: true,
         coverage: {
