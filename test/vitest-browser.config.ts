@@ -12,11 +12,9 @@ export default defineConfig({
         },
         include: ["test/unit/**/*.js"],
         exclude: ["test/unit/Mocker.js", "test/unit/node/*"],
-        testTimeout: 60000,
         retry: 1,
-        // Run sequentially to ensure more stable environment
-        maxWorkers: 4,
-        // Ensure test isolation
+        maxWorkers: 8,
+        fileParallelism: true,
         isolate: true,
         coverage: {
             include: ["src/**/*.js"],
