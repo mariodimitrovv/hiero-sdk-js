@@ -25,14 +25,6 @@ export default defineConfig({
             reportsDirectory: "./coverage",
         },
     },
-    optimizeDeps: {
-        esbuildOptions: {
-            // Node.js global to browser polyfill
-            define: {
-                global: "globalThis",
-            },
-        },
-    },
     resolve: {
         alias: {
             // redirect src/ to src/browser
