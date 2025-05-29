@@ -162,6 +162,7 @@ export default class PrivateKey extends Key {
         // previous versions of the library used to accept non-der encoded private keys here
         // and it fallbacked to PrivateKey.fromString() so we need to keep this behavior
         if (!PrivateKey.isDerKey(text)) {
+            // eslint-disable-next-line deprecation/deprecation
             return PrivateKey.fromString(text);
         }
 
