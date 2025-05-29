@@ -30,7 +30,7 @@ export class ASN1Decoder {
 
         /**
          * @private
-         * @type {Object<string, string>}
+         * @type {{[key: string]: string}}
          */
         this.oidMap = {
             "1.3.132.0.10": "ecdsa",
