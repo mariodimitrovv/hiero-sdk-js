@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## v2.64.6
+
+### Added
+- Support for external transaction signing via HSM:
+  - Introduced `SignableNodeTransactionBodyBytes` to encapsulate `nodeAccountId`, `transactionId`, and canonical `bodyBytes`.
+  - Added `Transaction.signableNodeBodyBytesList()` API to return node-specific, signable transaction bytes for HSM workflows, enabling secure external signing and signature injection.
+  - Improves usability in enterprise and regulated environments. [#3119](https://github.com/hiero-ledger/hiero-sdk-js/pull/3119)
+- Test coverage for HSM-based signing added to the JavaScript SDK, including usage examples. [#3119](https://github.com/hiero-ledger/hiero-sdk-js/pull/3119)
+- A new test verifies the integrity of the signable transaction list `bodyBytes` for chunked transactions. [#3121](https://github.com/hiero-ledger/hiero-sdk-js/pull/3123)
+- Added a library to determine key type and updated relevant files to use the correct key type determination logic. [#3068](https://github.com/hiero-ledger/hiero-sdk-js/pull/3068)
+- Introduced transaction size getter for normal and chunked transactions. [#2961](https://github.com/hiero-ledger/hiero-sdk-js/pull/2961)
+
+### Changed
+- Services version bumped to `0.62.3`. [#3125](https://github.com/hiero-ledger/hiero-sdk-js/pull/3125)
+- Timeout for flaky tests corrected from 12s to 120s. [#3116](https://github.com/hiero-ledger/hiero-sdk-js/pull/3116)
+- Maximum workers capped for browser and integration tests to ensure stability. [#3116](https://github.com/hiero-ledger/hiero-sdk-js/pull/3116)
+
+### Fixed
+- Regressions in `ContractCreateTransaction` and `TokenCreateTransaction` resolved. [#3125](https://github.com/hiero-ledger/hiero-sdk-js/pull/3125)
+
+### Removed
+- Skipped batch transaction integration tests due to regressions. [#3125](https://github.com/hiero-ledger/hiero-sdk-js/pull/3125)
+
+### Documentation
+- Added usage instructions in an example for HSM-based signing in SDK. [#3119](https://github.com/hiero-ledger/hiero-sdk-js/pull/3119)
+- Local command introduced for checking code coverage without relying on remote results. [#3116](https://github.com/hiero-ledger/hiero-sdk-js/pull/3116)
+
 ## v2.64.5
 
 ### Added
