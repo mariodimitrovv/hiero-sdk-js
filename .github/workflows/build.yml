@@ -127,11 +127,6 @@ jobs:
           files: ./coverage/lcov.info
           fail_ci_if_error: false
 
-      - name: Stop the local node
-        id: stop-local-node
-        if: ${{ steps.start-local-node.conclusion == 'success' && !cancelled() && always() }}
-        run: ${{ env.CG_EXEC }} npx @hashgraph/hedera-local stop
-
       - name: Build @hashgraph/cryptography
         working-directory: packages/cryptography
         if: ${{ steps.build-sdk.conclusion == 'success' && steps.stop-local-node.conclusion == 'success' && !cancelled() && always() }}
@@ -224,9 +219,5 @@ jobs:
           cd examples
           pnpm i
 
-      - name: Run all еxamples
+      - name: Run all examples
         run: task run:examples
-      - name: Stop the local node
-        id: stop-local-node
-        if: ${{ steps.start-local-node.conclusion == 'success' && !cancelled() && always() }}
-        run: ${{ env.CG_EXEC }} npx @hashgraph/hedera-local stop
