@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.67.0
+
+### Added
+
+- Getter for `shard` set in the client
+- Getter for `realm` set in the client
+
+### Changed
+
+- `ClientConfiguration` type updated: The `Client` constructor now accepts `shard` and `realm` parameters directly. [#3133](https://github.com/hiero-ledger/hiero-sdk-js/pull/3133)
+- `Client.forMirrorNetwork` now supports two additional arguments: `shard` and `realm`. [#3133](https://github.com/hiero-ledger/hiero-sdk-js/pull/3133)
+- When a custom network is provided in the `Client` constructor, the `shard` and `realm` values are now automatically inferred from the specified network. [#3133](https://github.com/hiero-ledger/hiero-sdk-js/pull/3133)
+- An error is now thrown if the nodes defined in a custom network are not all in the same `shard` and `realm`, enforcing consistency and preventing misconfiguration. [#3133](https://github.com/hiero-ledger/hiero-sdk-js/pull/3133)
+
+
+
 ## v2.66.0
 
 ### Added
