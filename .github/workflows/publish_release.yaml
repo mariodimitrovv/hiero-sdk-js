@@ -349,11 +349,11 @@ jobs:
         working-directory: packages/proto
         if: ${{ needs.validate-release.outputs.proto-publish-required == 'true' && !cancelled() && !failure() }}
         run: |
-          NPM_TOKEN="${NPM_HG_TOKEN}"
+          export NPM_TOKEN="${NPM_HG_TOKEN}"
           task -v publish -- ${{ steps.proto-publish.outputs.args }}
           cp package.json tmp.package.json
           jq '.name |= sub("@hashgraph";"@hiero-ledger")' tmp.package.json > package.json
-          NPM_TOKEN="${NPM_HL_TOKEN}"
+          export NPM_TOKEN="${NPM_HL_TOKEN}"
           task -v publish -- ${{ steps.proto-publish.outputs.args }}
           mv tmp.package.json package.json
 
@@ -364,11 +364,11 @@ jobs:
         working-directory: packages/cryptography
         if: ${{ needs.validate-release.outputs.crypto-publish-required == 'true' && !cancelled() && !failure() }}
         run: |
-          NPM_TOKEN="${NPM_HG_TOKEN}"
+          export NPM_TOKEN="${NPM_HG_TOKEN}"
           task -v publish -- ${{ steps.crypto-publish.outputs.args }}
           cp package.json tmp.package.json
           jq '.name |= sub("@hashgraph";"@hiero-ledger")' tmp.package.json > package.json
-          NPM_TOKEN="${NPM_HL_TOKEN}"
+          export NPM_TOKEN="${NPM_HL_TOKEN}"
           task -v publish -- ${{ steps.crypto-publish.outputs.args }}
           mv tmp.package.json package.json
 
@@ -377,11 +377,11 @@ jobs:
           NPM_HG_TOKEN: ${{ secrets.NPM_HG_TOKEN }}
           NPM_HL_TOKEN: ${{ secrets.NPM_HL_TOKEN }}
         run: |
-          NPM_TOKEN="${NPM_HG_TOKEN}"
+          export NPM_TOKEN="${NPM_HG_TOKEN}"
           task -v publish -- ${{ steps.sdk-publish.outputs.args }}
           cp package.json tmp.package.json
           jq '.name |= sub("@hashgraph";"@hiero-ledger")' tmp.package.json > package.json
-          NPM_TOKEN="${NPM_HL_TOKEN}"
+          export NPM_TOKEN="${NPM_HL_TOKEN}"
           task -v publish -- ${{ steps.sdk-publish.outputs.args }}
           mv tmp.package.json package.json
 
