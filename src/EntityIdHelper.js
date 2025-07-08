@@ -57,6 +57,21 @@ const regex =
 const ENTITY_ID_REGEX = /^(\d+)(?:\.(\d+)\.([a-fA-F0-9]+))?(?:-([a-z]{5}))?$/;
 
 /**
+ * @description The length of an EVM address in bytes.
+ */
+const EVM_ADDRESS_LENGTH = 20;
+
+/**
+ * @description The length of the long-zero prefix in bytes.
+ */
+const LONG_ZERO_PREFIX_LENGTH = 12;
+
+/**
+ * @description The offset of the entity number in the EVM address.
+ */
+const ENTITY_NUM_OFFSET = 16;
+
+/**
  * This method is called by most entity ID constructors. It's purpose is to
  * deduplicate the constuctors.
  *
@@ -213,7 +228,7 @@ export function fromSolidityAddress(address) {
         ? hex.decode(address.slice(2))
         : hex.decode(address);
 
-    if (addr.length !== 20) {
+    if (addr.length !== EVM_ADDRESS_LENGTH) {
         throw new Error(`Invalid hex encoded solidity address length:
                 expected length 40, got length ${address.length}`);
     }
@@ -245,15 +260,17 @@ export function fromEvmAddress(shard, realm, address) {
         ? hex.decode(address.slice(2))
         : hex.decode(address);
 
-    if (addr.length !== 20) {
+    if (addr.length !== EVM_ADDRESS_LENGTH) {
         throw new Error(`Invalid hex encoded evm address length:
-                expected length 20, got length ${address.length}`);
+                expected length ${EVM_ADDRESS_LENGTH}, got length ${address.length}`);
     }
 
     let num = Long.ZERO;
 
     if (util.isLongZeroAddress(addr)) {
-        num = Long.fromBytesBE(Array.from(addr.slice(12, 20)));
+        num = Long.fromBytesBE(
+            Array.from(addr.slice(LONG_ZERO_PREFIX_LENGTH, EVM_ADDRESS_LENGTH)),
+        );
     }
 
     let shardLong = shard instanceof Long ? shard : Long.fromNumber(shard);
@@ -307,10 +324,10 @@ export function toEvmAddress(evmAddressBytesOrAccountNum) {
     }
 
     const accountNum = evmAddressBytesOrAccountNum;
-    const buffer = new Uint8Array(20);
+    const buffer = new Uint8Array(EVM_ADDRESS_LENGTH);
     const view = util.safeView(buffer);
 
-    view.setUint32(16, util.convertToNumber(accountNum));
+    view.setUint32(ENTITY_NUM_OFFSET, util.convertToNumber(accountNum));
 
     return hex.encode(buffer);
 }
