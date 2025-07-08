@@ -310,7 +310,7 @@ export default class AccountId {
     }
 
     /**
-     * @returns {string}
+     * @returns {string} EVM-compatible address representation of the entity
      */
     toEvmAddress() {
         return EntityIdHelper.toEvmAddress(
