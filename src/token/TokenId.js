@@ -144,7 +144,7 @@ export default class TokenId {
      * @returns {string}
      */
     toEvmAddress() {
-        return EntityIdHelper.toEvmAddress(null, this.num);
+        return EntityIdHelper.toEvmAddress(this.num);
     }
 
     /**

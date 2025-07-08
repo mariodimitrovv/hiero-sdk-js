@@ -209,7 +209,11 @@ export default class ContractId extends Key {
      * @returns {string} EVM-compatible address representation of the entity
      */
     toEvmAddress() {
-        return EntityIdHelper.toEvmAddress(this.evmAddress, this.num);
+        if (this.evmAddress != null) {
+            return EntityIdHelper.toEvmAddress(this.evmAddress);
+        }
+
+        return EntityIdHelper.toEvmAddress(this.num);
     }
     /**
      * @internal

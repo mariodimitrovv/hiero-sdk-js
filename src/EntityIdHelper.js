@@ -288,17 +288,25 @@ export function toSolidityAddress(address) {
 }
 
 /**
- * Convert account num into a evm address.
+ * Convert EVM address bytes to hex string or account num to long-zero EVM address.
  *
- * @param {Uint8Array<ArrayBufferLike> | null} evmAddress
- * @param {Long} accountNum
+ * @overload
+ * @param {Uint8Array} evmAddressBytes - EVM address bytes to convert to hex
+ * @returns {string} Hex string representation of the EVM address
+ *
+ * @overload
+ * @param {Long} accountNum - Account number to convert to long-zero EVM address
+ * @returns {string} Long-zero EVM address as hex string
+ *
+ * @param {Uint8Array | Long} evmAddressBytesOrAccountNum
  * @returns {string}
  */
-export function toEvmAddress(evmAddress, accountNum) {
-    if (evmAddress) {
-        return hex.encode(evmAddress);
+export function toEvmAddress(evmAddressBytesOrAccountNum) {
+    if (evmAddressBytesOrAccountNum instanceof Uint8Array) {
+        return hex.encode(evmAddressBytesOrAccountNum);
     }
 
+    const accountNum = evmAddressBytesOrAccountNum;
     const buffer = new Uint8Array(20);
     const view = util.safeView(buffer);
 

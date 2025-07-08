@@ -173,7 +173,7 @@ export default class FileId {
      * @returns {string} EVM-compatible address representation of the entity
      */
     toEvmAddress() {
-        return EntityIdHelper.toEvmAddress(null, this.num);
+        return EntityIdHelper.toEvmAddress(this.num);
     }
 
     /**

@@ -313,10 +313,11 @@ export default class AccountId {
      * @returns {string} EVM-compatible address representation of the entity
      */
     toEvmAddress() {
-        return EntityIdHelper.toEvmAddress(
-            this.evmAddress?.toBytes() ?? null,
-            this.num,
-        );
+        if (this.evmAddress != null) {
+            return EntityIdHelper.toEvmAddress(this.evmAddress.toBytes());
+        }
+
+        return EntityIdHelper.toEvmAddress(this.num);
     }
 
     //TODO remove the comments after we get to HIP-631
