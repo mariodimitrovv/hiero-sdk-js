@@ -226,12 +226,15 @@ export function fromSolidityAddress(address) {
 }
 
 /**
- * Return the shard, realm, and num from a evm address.
+ * Parse an EVM address and return shard, realm, entity num, and optional EVM address.
  *
- * @param {Long | number} shard
- * @param {Long | number} realm
- * @param {string} address
- * @returns {[Long, Long, Long, EvmAddress | null]}
+ * For long zero addresses (first 12 bytes are zeros): returns [shard, realm, entityNum, null]
+ * For regular EVM addresses: returns [shard, realm, 0, EvmAddress]
+ *
+ * @param {Long | number} shard - The shard number to use
+ * @param {Long | number} realm - The realm number to use
+ * @param {string} address - The EVM address to parse (with or without 0x prefix)
+ * @returns {[Long, Long, Long, EvmAddress | null]} - [shard, realm, entityNum, evmAddressOrNull]
  */
 export function fromEvmAddress(shard, realm, address) {
     if (!hex.isHexString(address)) {
