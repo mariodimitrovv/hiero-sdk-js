@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import * as entity_id from "../EntityIdHelper.js";
+import * as EntityIdHelper from "../EntityIdHelper.js";
 import * as HieroProto from "@hashgraph/proto";
 import EvmAddress from "../EvmAddress.js";
 import * as util from "../util.js";
@@ -20,7 +20,7 @@ export default class TopicId {
      * @param {(number | Long)=} num
      */
     constructor(props, realm, num) {
-        const result = entity_id.constructor(props, realm, num);
+        const result = EntityIdHelper.constructor(props, realm, num);
 
         this.shard = result.shard;
         this.realm = result.realm;
@@ -37,7 +37,7 @@ export default class TopicId {
      * @returns {TopicId}
      */
     static fromString(text) {
-        const result = entity_id.fromString(text);
+        const result = EntityIdHelper.fromString(text);
         const id = new TopicId(result);
         id._checksum = result.checksum;
         return id;
@@ -78,7 +78,7 @@ export default class TopicId {
      * @param {Client} client
      */
     validateChecksum(client) {
-        entity_id.validateChecksum(
+        EntityIdHelper.validateChecksum(
             this.shard,
             this.realm,
             this.num,
@@ -101,7 +101,8 @@ export default class TopicId {
      * @returns {TopicId}
      */
     static fromSolidityAddress(address) {
-        const [shard, realm, topic] = entity_id.fromSolidityAddress(address);
+        const [shard, realm, topic] =
+            EntityIdHelper.fromSolidityAddress(address);
         return new TopicId(shard, realm, topic);
     }
 
@@ -121,7 +122,7 @@ export default class TopicId {
             );
         }
 
-        const [shardLong, realmLong, topicLong] = entity_id.fromEvmAddress(
+        const [shardLong, realmLong, topicLong] = EntityIdHelper.fromEvmAddress(
             shard,
             realm,
             address,
@@ -134,14 +135,18 @@ export default class TopicId {
      * @returns {string}
      */
     toSolidityAddress() {
-        return entity_id.toSolidityAddress([this.shard, this.realm, this.num]);
+        return EntityIdHelper.toSolidityAddress([
+            this.shard,
+            this.realm,
+            this.num,
+        ]);
     }
 
     /**
      * @returns {string}
      */
     toEvmAddress() {
-        return entity_id.toEvmAddress(null, this.num);
+        return EntityIdHelper.toEvmAddress(null, this.num);
     }
 
     /**
@@ -167,7 +172,7 @@ export default class TopicId {
      * @returns {string}
      */
     toStringWithChecksum(client) {
-        return entity_id.toStringWithChecksum(this.toString(), client);
+        return EntityIdHelper.toStringWithChecksum(this.toString(), client);
     }
 
     /**
@@ -191,7 +196,7 @@ export default class TopicId {
      * @returns {number}
      */
     compare(other) {
-        return entity_id.compare(
+        return EntityIdHelper.compare(
             [this.shard, this.realm, this.num],
             [other.shard, other.realm, other.num],
         );

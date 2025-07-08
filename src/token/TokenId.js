@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import * as entity_id from "../EntityIdHelper.js";
+import * as EntityIdHelper from "../EntityIdHelper.js";
 import * as HieroProto from "@hashgraph/proto";
 import EvmAddress from "../EvmAddress.js";
 import * as util from "../util.js";
@@ -20,7 +20,7 @@ export default class TokenId {
      * @param {(number | Long)=} num
      */
     constructor(props, realm, num) {
-        const result = entity_id.constructor(props, realm, num);
+        const result = EntityIdHelper.constructor(props, realm, num);
 
         this.shard = result.shard;
         this.realm = result.realm;
@@ -37,7 +37,7 @@ export default class TokenId {
      * @returns {TokenId}
      */
     static fromString(text) {
-        const result = entity_id.fromString(text);
+        const result = EntityIdHelper.fromString(text);
         const id = new TokenId(result);
         id._checksum = result.checksum;
         return id;
@@ -78,7 +78,7 @@ export default class TokenId {
      * @param {Client} client
      */
     validateChecksum(client) {
-        entity_id.validateChecksum(
+        EntityIdHelper.validateChecksum(
             this.shard,
             this.realm,
             this.num,
@@ -101,7 +101,7 @@ export default class TokenId {
      * @returns {TokenId}
      */
     static fromSolidityAddress(address) {
-        return new TokenId(...entity_id.fromSolidityAddress(address));
+        return new TokenId(...EntityIdHelper.fromSolidityAddress(address));
     }
 
     /**
@@ -120,7 +120,7 @@ export default class TokenId {
             );
         }
 
-        const [shardLong, realmLong, tokenLong] = entity_id.fromEvmAddress(
+        const [shardLong, realmLong, tokenLong] = EntityIdHelper.fromEvmAddress(
             shard,
             realm,
             address,
@@ -133,14 +133,18 @@ export default class TokenId {
      * @returns {string} solidity address
      */
     toSolidityAddress() {
-        return entity_id.toSolidityAddress([this.shard, this.realm, this.num]);
+        return EntityIdHelper.toSolidityAddress([
+            this.shard,
+            this.realm,
+            this.num,
+        ]);
     }
 
     /**
      * @returns {string}
      */
     toEvmAddress() {
-        return entity_id.toEvmAddress(null, this.num);
+        return EntityIdHelper.toEvmAddress(null, this.num);
     }
 
     /**
@@ -167,7 +171,7 @@ export default class TokenId {
      * @returns {string}
      */
     toStringWithChecksum(client) {
-        return entity_id.toStringWithChecksum(this.toString(), client);
+        return EntityIdHelper.toStringWithChecksum(this.toString(), client);
     }
 
     /**
@@ -191,7 +195,7 @@ export default class TokenId {
      * @returns {number}
      */
     compare(other) {
-        return entity_id.compare(
+        return EntityIdHelper.compare(
             [this.shard, this.realm, this.num],
             [other.shard, other.realm, other.num],
         );
