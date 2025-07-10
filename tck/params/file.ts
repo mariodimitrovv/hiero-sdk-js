@@ -5,3 +5,12 @@ export interface FileCreateParams {
     readonly memo: string;
     readonly commonTransactionParams?: Record<string, any>;
 }
+
+export interface FileAppendParams {
+    readonly fileId: string;
+    readonly contents: string;
+    readonly maxChunks: number;
+    readonly chunkSize: number;
+    readonly chunkInterval: number;
+    readonly commonTransactionParams?: Record<string, any>;
+}

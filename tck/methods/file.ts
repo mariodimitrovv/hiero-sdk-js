@@ -1,8 +1,12 @@
-import { FileCreateTransaction, Timestamp } from "@hashgraph/sdk";
+import {
+    FileCreateTransaction,
+    FileAppendTransaction,
+    Timestamp,
+} from "@hashgraph/sdk";
 import Long from "long";
 
 import { applyCommonTransactionParams } from "../params/common-tx-params";
-import { FileCreateParams } from "../params/file";
+import { FileCreateParams, FileAppendParams } from "../params/file";
 
 import { sdk } from "../sdk_data";
 import { FileResponse } from "../response/file";
@@ -52,6 +56,54 @@ export const createFile = async ({
 
     return {
         fileId: receipt.fileId.toString(),
+        status: receipt.status.toString(),
+    };
+};
+
+export const appendFile = async ({
+    fileId,
+    contents,
+    maxChunks,
+    chunkSize,
+    chunkInterval,
+    commonTransactionParams,
+}: FileAppendParams): Promise<FileResponse> => {
+    const transaction = new FileAppendTransaction().setGrpcDeadline(
+        DEFAULT_GRPC_DEADLINE,
+    );
+
+    if (fileId != null) {
+        transaction.setFileId(fileId);
+    }
+
+    if (contents != null) {
+        transaction.setContents(contents);
+    }
+
+    if (maxChunks != null) {
+        transaction.setMaxChunks(maxChunks);
+    }
+
+    if (chunkSize != null) {
+        transaction.setChunkSize(chunkSize);
+    }
+
+    if (chunkInterval != null) {
+        transaction.setChunkInterval(chunkInterval);
+    }
+
+    if (commonTransactionParams != null) {
+        applyCommonTransactionParams(
+            commonTransactionParams,
+            transaction,
+            sdk.getClient(),
+        );
+    }
+
+    const response = await transaction.execute(sdk.getClient());
+    const receipt = await response.getReceipt(sdk.getClient());
+
+    return {
         status: receipt.status.toString(),
     };
 };
