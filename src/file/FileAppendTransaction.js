@@ -305,6 +305,9 @@ export default class FileAppendTransaction extends Transaction {
      * @returns {this}
      */
     setChunkSize(chunkSize) {
+        if (chunkSize <= 0) {
+            throw new Error("Chunk size must be greater than 0");
+        }
         this._chunkSize = chunkSize;
         return this;
     }
