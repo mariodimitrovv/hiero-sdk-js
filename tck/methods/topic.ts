@@ -20,7 +20,7 @@ export const createTopic = async ({
     adminKey,
     submitKey,
     autoRenewPeriod,
-    autoRenewAccount,
+    autoRenewAccountId,
     feeScheduleKey,
     feeExemptKeys,
     customFees,
@@ -48,8 +48,8 @@ export const createTopic = async ({
         transaction.setAutoRenewPeriod(Long.fromString(autoRenewPeriod));
     }
 
-    if (autoRenewAccount != null) {
-        transaction.setAutoRenewAccountId(autoRenewAccount);
+    if (autoRenewAccountId != null) {
+        transaction.setAutoRenewAccountId(autoRenewAccountId);
     }
 
     if (feeScheduleKey != null) {

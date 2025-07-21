@@ -3,7 +3,7 @@ export interface TopicCreateParams {
     readonly adminKey?: string;
     readonly submitKey?: string;
     readonly autoRenewPeriod: string;
-    readonly autoRenewAccount?: string;
+    readonly autoRenewAccountId?: string;
     readonly feeScheduleKey?: string;
     readonly feeExemptKeys?: string[];
     readonly customFees?: CustomFee[];
