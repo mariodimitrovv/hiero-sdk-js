@@ -34,6 +34,7 @@ export interface TopicSubmitMessageParams {
     readonly message: string;
     readonly maxChunks?: number;
     readonly chunkSize?: number;
+    readonly customFeeLimits?: CustomFeeLimit[];
     readonly commonTransactionParams?: Record<string, any>;
 }
 
@@ -41,6 +42,11 @@ export interface CustomFee {
     readonly feeCollectorAccountId: string;
     readonly feeCollectorsExempt: boolean;
     readonly fixedFee: FixedFee;
+}
+
+export interface CustomFeeLimit {
+    readonly payerId: string;
+    readonly fixedFees: FixedFee[];
 }
 
 export interface FixedFee {

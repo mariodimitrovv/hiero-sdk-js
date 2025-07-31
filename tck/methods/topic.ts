@@ -6,6 +6,8 @@ import {
     TopicUpdateTransaction,
     TopicDeleteTransaction,
     TopicMessageSubmitTransaction,
+    CustomFeeLimit,
+    AccountId,
 } from "@hashgraph/sdk";
 import Long from "long";
 
@@ -247,6 +249,7 @@ export const submitTopicMessage = async ({
     message,
     maxChunks,
     chunkSize,
+    customFeeLimits,
     commonTransactionParams,
 }: TopicSubmitMessageParams): Promise<TopicResponse> => {
     const transaction = new TopicMessageSubmitTransaction().setGrpcDeadline(
@@ -259,6 +262,8 @@ export const submitTopicMessage = async ({
 
     if (message != null) {
         transaction.setMessage(message);
+    } else {
+        throw new Error("Message is required");
     }
 
     if (maxChunks != null) {
@@ -267,6 +272,26 @@ export const submitTopicMessage = async ({
 
     if (chunkSize != null) {
         transaction.setChunkSize(chunkSize);
+    }
+
+    if (customFeeLimits != null) {
+        const sdkCustomFeeLimits = customFeeLimits.map((feeLimit) => {
+            const customFixedFees = feeLimit.fixedFees.map((fee) => {
+                if (fee.denominatingTokenId) {
+                    return new CustomFixedFee()
+                        .setAmount(Long.fromString(fee.amount))
+                        .setDenominatingTokenId(fee.denominatingTokenId);
+                } else {
+                    return new CustomFixedFee().setHbarAmount(
+                        Hbar.fromTinybars(Long.fromString(fee.amount)),
+                    );
+                }
+            });
+            return new CustomFeeLimit()
+                .setAccountId(AccountId.fromString(feeLimit.payerId))
+                .setFees(customFixedFees);
+        });
+        transaction.setCustomFeeLimits(sdkCustomFeeLimits);
     }
 
     if (commonTransactionParams != null) {
