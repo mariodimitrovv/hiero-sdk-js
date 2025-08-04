@@ -439,7 +439,7 @@ export default class TopicUpdateTransaction extends Transaction {
     }
 
     /**
-     * Clears all keys that will be exempt from paying fees.
+     * Clears all keys that will be exempt from paying fees, effectively removing them from the network state.
      * @returns {this}
      */
     clearFeeExemptKeys() {
@@ -542,7 +542,7 @@ export default class TopicUpdateTransaction extends Transaction {
     }
 
     /**
-     * Clears fixed fees.
+     * Clears fixed fees, effectively removing them from the network state.
      *
      * @returns {this}
      */
