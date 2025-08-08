@@ -73,6 +73,7 @@ describe("ContractInfo", function () {
         expect(info.contractMemo).to.be.equal(
             "[e2e::ContractCreateTransaction]",
         );
+        expect(info.maxAutomaticTokenAssociations.toNumber()).to.be.equal(0);
 
         await (
             await new ContractDeleteTransaction()
@@ -140,6 +141,7 @@ describe("ContractInfo", function () {
         expect(info.contractMemo).to.be.equal(
             "[e2e::ContractCreateTransaction]",
         );
+        expect(info.maxAutomaticTokenAssociations.toNumber()).to.be.equal(0);
     });
 
     it("should error when contract ID is not set", async function () {
@@ -203,6 +205,80 @@ describe("ContractInfo", function () {
         if (!err) {
             throw new Error("contract info query did not error");
         }
+    });
+
+    it("should return correct maxAutomaticTokenAssociations", async function () {
+        const operatorKey = env.operatorKey.publicKey;
+        const maxTokenAssociations = 100;
+
+        let response = await new FileCreateTransaction()
+            .setKeys([operatorKey])
+            .setContents(smartContractBytecode)
+            .execute(env.client);
+
+        let receipt = await response.getReceipt(env.client);
+
+        expect(receipt.fileId).to.not.be.null;
+        expect(receipt.fileId != null ? receipt.fileId.num > 0 : false).to.be
+            .true;
+
+        const file = receipt.fileId;
+
+        response = await new ContractCreateTransaction()
+            .setAdminKey(operatorKey)
+            .setGas(300_000)
+            .setConstructorParameters(
+                new ContractFunctionParameters().addString(
+                    "Hello from Hedera.",
+                ),
+            )
+            .setBytecodeFileId(file)
+            .setContractMemo("[e2e::ContractCreateTransaction]")
+            .setMaxAutomaticTokenAssociations(maxTokenAssociations)
+            .execute(env.client);
+
+        receipt = await response.getReceipt(env.client);
+
+        expect(receipt.contractId).to.not.be.null;
+        expect(receipt.contractId != null ? receipt.contractId.num > 0 : false)
+            .to.be.true;
+
+        let contract = receipt.contractId;
+
+        let info = await new ContractInfoQuery()
+            .setContractId(contract)
+            .setQueryPayment(new Hbar(1))
+            .execute(env.client);
+
+        expect(info.contractId.toString()).to.be.equal(contract.toString());
+        expect(info.accountId).to.be.not.null;
+        expect(
+            info.contractId != null ? info.contractId.toString() : "",
+        ).to.be.equal(contract.toString());
+        expect(info.adminKey).to.be.not.null;
+        expect(
+            info.adminKey != null ? info.adminKey.toString() : "",
+        ).to.be.equal(operatorKey.toString());
+        expect(info.storage.toInt()).to.be.equal(128);
+        expect(info.contractMemo).to.be.equal(
+            "[e2e::ContractCreateTransaction]",
+        );
+        expect(info.maxAutomaticTokenAssociations.toNumber()).to.be.equal(
+            maxTokenAssociations,
+        );
+
+        await (
+            await new ContractDeleteTransaction()
+                .setContractId(contract)
+                .setTransferAccountId(env.client.operatorAccountId)
+                .execute(env.client)
+        ).getReceipt(env.client);
+
+        await (
+            await new FileDeleteTransaction()
+                .setFileId(file)
+                .execute(env.client)
+        ).getReceipt(env.client);
     });
 
     it("should be able to query cost", async function () {
