@@ -1,10 +1,8 @@
 import {
     ContractCreateTransaction,
-    ContractDeleteTransaction,
     ContractFunctionParameters,
     ContractInfoQuery,
     FileCreateTransaction,
-    FileDeleteTransaction,
     Hbar,
     Status,
 } from "../../src/exports.js";
@@ -39,9 +37,7 @@ describe("ContractInfo", function () {
             .setAdminKey(operatorKey)
             .setGas(300_000)
             .setConstructorParameters(
-                new ContractFunctionParameters().addString(
-                    "Hello from Hedera.",
-                ),
+                new ContractFunctionParameters().addString("Hello from Hiero."),
             )
             .setBytecodeFileId(file)
             .setContractMemo("[e2e::ContractCreateTransaction]")
@@ -74,19 +70,6 @@ describe("ContractInfo", function () {
             "[e2e::ContractCreateTransaction]",
         );
         expect(info.maxAutomaticTokenAssociations.toNumber()).to.be.equal(0);
-
-        await (
-            await new ContractDeleteTransaction()
-                .setContractId(contract)
-                .setTransferAccountId(env.client.operatorAccountId)
-                .execute(env.client)
-        ).getReceipt(env.client);
-
-        await (
-            await new FileDeleteTransaction()
-                .setFileId(file)
-                .execute(env.client)
-        ).getReceipt(env.client);
     });
 
     it("should be able to query when admin key is null", async function () {
@@ -107,9 +90,7 @@ describe("ContractInfo", function () {
         response = await new ContractCreateTransaction()
             .setGas(300_000)
             .setConstructorParameters(
-                new ContractFunctionParameters().addString(
-                    "Hello from Hedera.",
-                ),
+                new ContractFunctionParameters().addString("Hello from Hiero."),
             )
             .setBytecodeFileId(file)
             .setContractMemo("[e2e::ContractCreateTransaction]")
@@ -163,9 +144,7 @@ describe("ContractInfo", function () {
             .setAdminKey(operatorKey)
             .setGas(300_000)
             .setConstructorParameters(
-                new ContractFunctionParameters().addString(
-                    "Hello from Hedera.",
-                ),
+                new ContractFunctionParameters().addString("Hello from Hiero."),
             )
             .setBytecodeFileId(file)
             .setContractMemo("[e2e::ContractCreateTransaction]")
@@ -188,19 +167,6 @@ describe("ContractInfo", function () {
         } catch (error) {
             err = error.toString().includes(Status.InvalidContractId);
         }
-
-        await (
-            await new ContractDeleteTransaction()
-                .setContractId(contract)
-                .setTransferAccountId(env.client.operatorAccountId)
-                .execute(env.client)
-        ).getReceipt(env.client);
-
-        await (
-            await new FileDeleteTransaction()
-                .setFileId(file)
-                .execute(env.client)
-        ).getReceipt(env.client);
 
         if (!err) {
             throw new Error("contract info query did not error");
@@ -228,9 +194,7 @@ describe("ContractInfo", function () {
             .setAdminKey(operatorKey)
             .setGas(300_000)
             .setConstructorParameters(
-                new ContractFunctionParameters().addString(
-                    "Hello from Hedera.",
-                ),
+                new ContractFunctionParameters().addString("Hello from Hiero."),
             )
             .setBytecodeFileId(file)
             .setContractMemo("[e2e::ContractCreateTransaction]")
@@ -266,19 +230,6 @@ describe("ContractInfo", function () {
         expect(info.maxAutomaticTokenAssociations.toNumber()).to.be.equal(
             maxTokenAssociations,
         );
-
-        await (
-            await new ContractDeleteTransaction()
-                .setContractId(contract)
-                .setTransferAccountId(env.client.operatorAccountId)
-                .execute(env.client)
-        ).getReceipt(env.client);
-
-        await (
-            await new FileDeleteTransaction()
-                .setFileId(file)
-                .execute(env.client)
-        ).getReceipt(env.client);
     });
 
     it("should be able to query cost", async function () {
@@ -296,9 +247,7 @@ describe("ContractInfo", function () {
             .setAdminKey(operatorKey)
             .setGas(300_000)
             .setConstructorParameters(
-                new ContractFunctionParameters().addString(
-                    "Hello from Hedera.",
-                ),
+                new ContractFunctionParameters().addString("Hello from Hiero."),
             )
             .setBytecodeFileId(file)
             .setContractMemo("[e2e::ContractCreateTransaction]")
