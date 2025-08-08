@@ -156,8 +156,6 @@ describe("ContractInfo", function () {
         expect(receipt.contractId != null ? receipt.contractId.num > 0 : false)
             .to.be.true;
 
-        let contract = receipt.contractId;
-
         let err = false;
 
         try {
